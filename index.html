@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <title>猜數字遊戲</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h1>猜數字遊戲</h1>
+    <p>1 到 100 之間的數字，你猜是多少？</p>
+    <input type="text" id="guessField" />
+    <input type="submit" value="猜!" id="guessSubmit" />
+    <p class="message"></p>
+    <p class="attempts"></p>
+  </body>
+  <script>
+    // Random number
+    const targetNumber = Math.floor(Math.random() * 100) + 1;
+    console.log("answer: " + targetNumber);
+
+    // Get elements
+    const guessField = document.getElementById("guessField");
+    const guessSubmit = document.getElementById("guessSubmit");
+    const message = document.querySelector(".message");
+    const attempts = document.querySelector(".attempts");
+
+    // Variables to track attempts
+    let attemptCount = 0;
+
+    // Event listener
+    guessSubmit.addEventListener("click", checkGuess);
+
+    // Guess function
+    function checkGuess() {
+      const userGuess = parseInt(guessField.value);
+      console.log("userGuess: " + userGuess);
+      attemptCount++; // Increment attempt count
+
+      if (userGuess === targetNumber) {
+        message.textContent = `恭喜你，你猜對了！你這次猜了 ${attemptCount} 次哦～`;
+        message.style.color = "green";
+        guessSubmit.disabled = true;
+      } else if (userGuess < targetNumber) {
+        message.textContent = "太小了，再試一次。";
+        message.style.color = "red";
+      } else {
+        message.textContent = "太大了，再試一次。";
+        message.style.color = "red";
+      }
+
+      attempts.textContent = `猜測次數：${attemptCount}`;
+      guessField.value = "";
+      guessField.focus();
+    }
+  </script>
+</html>
