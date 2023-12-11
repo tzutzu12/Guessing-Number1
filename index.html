@@ -13,6 +13,7 @@
     <button id="playAgainBtn">再玩一次</button>
     <p class="message"></p>
     <p class="attempts"></p>
+    <p class="second"></p>
   </body>
   <script>
     // Random number
@@ -24,11 +25,19 @@
     const guessSubmit = document.getElementById("guessSubmit");
     const message = document.querySelector(".message");
     const attempts = document.querySelector(".attempts");
+    const second = document.querySelector(".second");
     const showAnswerBtn = document.getElementById("showAnswerBtn");
     const playAgainBtn = document.getElementById("playAgainBtn");
 
     // Variables to track attempts
     let attemptCount = 0;
+
+    // 新增 delayedDisplay 
+    function delayedDisplay(string, ms, callback) {
+      setTimeout(() => {
+        callback(string);
+      }, ms);
+    }
 
     // Event listeners
     guessSubmit.addEventListener("click", checkGuess);
@@ -85,6 +94,26 @@
       console.log("New answer: " + targetNumber);
 
       attemptCount = 0; // 重置猜測次數
+
+      // 倒數計時
+      delayedDisplay("5", 0, display);
+      delayedDisplay("4", 1000, display);
+      delayedDisplay("3", 2000, display);
+      delayedDisplay("2", 3000, display);
+      delayedDisplay("1", 4000, display);
+    }
+
+    // 新增 display
+    function display(value) {
+      if (value !== "0") {
+        second.textContent = `倒數計時：${value}`;
+      } else {
+        message.textContent = `重新開始遊戲！`;
+        message.style.color = "blue";
+        attempts.textContent = "";
+        guessSubmit.disabled = true;
+        second.textContent = "";
+      }
     }
   </script>
 </html>
