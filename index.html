@@ -14,76 +14,77 @@
     <p class="message"></p>
     <p class="attempts"></p>
   </body>
+  <script>
+    // Random number
+    let targetNumber = Math.floor(Math.random() * 100) + 1;
+    console.log("answer: " + targetNumber);
 
-    <script>
-      // Random number
-      let targetNumber = Math.floor(Math.random() * 100) + 1;
-      console.log("answer: " + targetNumber);
+    // Get elements
+    const guessField = document.getElementById("guessField");
+    const guessSubmit = document.getElementById("guessSubmit");
+    const message = document.querySelector(".message");
+    const attempts = document.querySelector(".attempts");
+    const showAnswerBtn = document.getElementById("showAnswerBtn");
+    const playAgainBtn = document.getElementById("playAgainBtn");
 
-      // Get elements
-      const guessField = document.getElementById("guessField");
-      const guessSubmit = document.getElementById("guessSubmit");
-      const message = document.querySelector(".message");
-      const attempts = document.querySelector(".attempts");
-      const showAnswerBtn = document.getElementById("showAnswerBtn");
-      const playAgainBtn = document.getElementById("playAgainBtn");
+    // Variables to track attempts
+    let attemptCount = 0;
 
-      // Variables to track attempts
-      let attemptCount = 0;
+    // Event listeners
+    guessSubmit.addEventListener("click", checkGuess);
+    showAnswerBtn.addEventListener("click", showAnswer);
+    playAgainBtn.addEventListener("click", playAgain);
 
-      // Event listeners
-      guessSubmit.addEventListener("click", checkGuess);
-      showAnswerBtn.addEventListener("click", showAnswer);
-      playAgainBtn.addEventListener("click", playAgain);
+    // Guess function
+    function checkGuess() {
+      const userGuess = parseInt(guessField.value);
+      console.log("userGuess: " + userGuess);
+      attemptCount++;
 
-      // Guess function
-      function checkGuess() {
-        const userGuess = parseInt(guessField.value);
-        console.log("userGuess: " + userGuess);
-        attemptCount++; // Increment attempt count
-
-        if (userGuess === targetNumber) {
-          message.textContent = `恭喜你，你猜對了！你這次猜了 ${attemptCount} 次哦～`;
-          message.style.color = "green";
-          guessSubmit.disabled = true;
-        } else if (attemptCount === 5) {
-          message.textContent = `You Failed! 答案是 ${targetNumber}`;
-          message.style.color = "red";
-          guessSubmit.disabled = true;
-        } else if (userGuess < targetNumber) {
-          message.textContent = "太小了，再試一次。";
-          message.style.color = "red";
-        } else {
-          message.textContent = "太大了，再試一次。";
-          message.style.color = "red";
-        }
-
-        attempts.textContent = `猜測次數：${attemptCount}`;
-        guessField.value = "";
-        guessField.focus();
-      }
-
-      function showAnswer() {
-        message.textContent = `本次遊戲的答案是：${targetNumber}`;
-        message.style.color = "blue";
-        attempts.textContent = "";
+      if (userGuess === targetNumber) {
+        message.textContent = `恭喜你，你猜對了！你這次猜了 ${attemptCount} 次哦～`;
+        message.style.color = "green";
         guessSubmit.disabled = true;
+      } else if (attemptCount === 5) {
+        message.textContent = `You Failed! 答案是 ${targetNumber}`;
+        message.style.color = "red";
+        guessSubmit.disabled = true;
+        setTimeout(playAgain, 5000); // 5 秒後重新開始新的一局
+      } else if (userGuess < targetNumber) {
+        message.textContent = "太小了，再試一次。";
+        message.style.color = "red";
+      } else {
+        message.textContent = "太大了，再試一次。";
+        message.style.color = "red";
       }
 
-      function playAgain() {
-        message.textContent = ""; // 清空訊息
-        attempts.textContent = ""; // 清空猜測次數
-        guessField.value = ""; // 清空輸入欄
-        guessSubmit.disabled = false; // 恢復猜按鈕為可用狀態
+      attempts.textContent = `猜測次數：${attemptCount}`;
+      guessField.value = "";
+      guessField.focus();
+    }
 
-        // hidden 本來的揭曉答案
-        if (message.style.color === "blue") {
-          message.textContent = "";
-        }
+    function showAnswer() {
+      message.textContent = `本次遊戲的答案是：${targetNumber}`;
+      message.style.color = "blue";
+      attempts.textContent = "";
+      guessSubmit.disabled = true;
+    }
 
-        // new random ans
-        targetNumber = Math.floor(Math.random() * 100) + 1;
-        console.log("New answer: " + targetNumber);
+    function playAgain() {
+      message.textContent = "";
+      attempts.textContent = "";
+      guessField.value = "";
+      guessSubmit.disabled = false;
+      message.style.color = "";
+
+      if (message.style.color === "blue") {
+        message.textContent = "";
       }
-    </script>
-  </html>
+
+      targetNumber = Math.floor(Math.random() * 100) + 1;
+      console.log("New answer: " + targetNumber);
+
+      attemptCount = 0; // 重置猜測次數
+    }
+  </script>
+</html>
